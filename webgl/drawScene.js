@@ -16,7 +16,7 @@ const setVertexPositions = (gl, buffers, programInfo) => {
 
     // this is telling us how to pull the data out from the attributes
     gl.vertexAttribPointer(
-        programInfo.attribLocations.vertexPosition,
+        programInfo.attribLocations.vertexPosition,  // this ends up returning an index
         numComponents,  // in the position example, this is representative of the "3 points to dictate a coordinate"
         type,
         normalize,
@@ -61,6 +61,10 @@ const setCube = (gl, buffers, programInfo) => {
     const vertexCount = 36;
     const type = gl.UNSIGNED_SHORT;
     const offset = 0;
+    // console.log('gl.TRIANGLES', gl.TRIANGLES) // 4
+    // console.log({ vertexCount })  // 36
+    // console.log({ type }) // 5123
+    // console.log({ offset }) // 0
     gl.drawElements(gl.TRIANGLES, vertexCount, type, offset);
 };
 
@@ -85,7 +89,6 @@ export const drawScene = (gl, programInfo, buffers, deltaTime) => {
 
     // TODO: this is kinda strange. We are binding it... but not sure if we are doing anything with it.
     // gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffers.indices);
-    //
 
     const projectionMatrix = mat4.create();
 
@@ -100,10 +103,12 @@ export const drawScene = (gl, programInfo, buffers, deltaTime) => {
     // we need a *different* matrix for the modelViewMatrix
     const modelViewMatrix = mat4.create();
 
+    const rotationAmount = squareRotation * 0.7;
+
     mat4.rotate(
         modelViewMatrix,
         modelViewMatrix,
-        `` * 0.7,
+        rotationAmount,
         [0, 1, 0]
     )
 
@@ -111,7 +116,7 @@ export const drawScene = (gl, programInfo, buffers, deltaTime) => {
     mat4.rotate(
         modelViewMatrix, // destination matrix
         modelViewMatrix, // matrix to rotate
-        squareRotation * 0.7, // amount to rotate
+        rotationAmount, // amount to rotate
         // ^ now represents the cube rotation.
         [0, 0, 1], // the axis to rotate
     );

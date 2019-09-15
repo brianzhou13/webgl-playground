@@ -87,8 +87,9 @@
             const deltaTime = now - then;
             then = now;
 
-            drawScene(gl, programInfo, initBuffers(gl), deltaTime)
-            drawScene(gl, programInfo, initBuffers(gl), deltaTime)
+            const buffers = initBuffers(gl);
+
+            drawScene(gl, programInfo, buffers, deltaTime)
 
             requestAnimationFrame(render);
         }
